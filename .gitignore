@@ -1,0 +1,9 @@
+build
+.eggs
+faster.egg-info
+setup.cmd
+**/__pycache__
+faster/*.pyd
+faster/*.so
+cythonize.cmd
+build_exts.cmd

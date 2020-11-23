@@ -829,6 +829,21 @@ struct __pyx_obj_6faster_8fastlist_fastlist;
 struct __pyx_obj_6faster_8fastlist___pyx_scope_struct____iter__;
 struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_1___repr__;
 struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_2_genexpr;
+struct __pyx_ctuple_int__and_int__and_int;
+typedef struct __pyx_ctuple_int__and_int__and_int __pyx_ctuple_int__and_int__and_int;
+
+/* "faster/fastlist.pyx":43
+ * 
+ *     cdef object _cgetitem_slice(self, slice indices):
+ *         cdef (int, int, int) dests = indices.indices(self._length)             # <<<<<<<<<<<<<<
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ *         cdef int i = 0, j
+ */
+struct __pyx_ctuple_int__and_int__and_int {
+  int f0;
+  int f1;
+  int f2;
+};
 
 /* "faster/fastlist.pxd":4
  * 
@@ -839,12 +854,13 @@ struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_2_genexpr;
  */
 struct __pyx_obj_6faster_8fastlist_fastlist {
   PyObject_HEAD
+  struct __pyx_vtabstruct_6faster_8fastlist_fastlist *__pyx_vtab;
   PyObject **_array;
   int _length;
 };
 
 
-/* "faster/fastlist.pyx":39
+/* "faster/fastlist.pyx":64
  *         return self._length
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -861,7 +877,7 @@ struct __pyx_obj_6faster_8fastlist___pyx_scope_struct____iter__ {
 };
 
 
-/* "faster/fastlist.pyx":44
+/* "faster/fastlist.pyx":69
  *             yield <object>self._array[i]
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -874,12 +890,12 @@ struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_1___repr__ {
 };
 
 
-/* "faster/fastlist.pyx":45
+/* "faster/fastlist.pyx":70
  * 
  *     def __repr__(self):
  *         return 'fastlist.from_sequence([%s])' % ', '.join(repr(v) for v in self)             # <<<<<<<<<<<<<<
  * 
- *     def __setitem__(self, int index, object value):
+ *     cdef void _csetitem_int(self, int index, object value):
  */
 struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_2_genexpr {
   PyObject_HEAD
@@ -887,6 +903,23 @@ struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_2_genexpr {
   PyObject *__pyx_v_v;
 };
 
+
+
+/* "faster/fastlist.pyx":11
+ * 
+ * 
+ * cdef class fastlist:             # <<<<<<<<<<<<<<
+ *     def __cinit__(self, int length = 0):
+ *         self._length = length
+ */
+
+struct __pyx_vtabstruct_6faster_8fastlist_fastlist {
+  PyObject *(*_cgetitem_int)(struct __pyx_obj_6faster_8fastlist_fastlist *, int);
+  PyObject *(*_cgetitem_slice)(struct __pyx_obj_6faster_8fastlist_fastlist *, PyObject *);
+  void (*_csetitem_int)(struct __pyx_obj_6faster_8fastlist_fastlist *, int, PyObject *);
+  void (*_csetitem_slice)(struct __pyx_obj_6faster_8fastlist_fastlist *, PyObject *, PyObject *);
+};
+static struct __pyx_vtabstruct_6faster_8fastlist_fastlist *__pyx_vtabptr_6faster_8fastlist_fastlist;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1041,25 +1074,29 @@ static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j);
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
                                                      int is_list, int wraparound, int boundscheck);
 
-/* None.proto */
-static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname);
+/* UnpackUnboundCMethod.proto */
+typedef struct {
+    PyObject *type;
+    PyObject **method_name;
+    PyCFunction func;
+    PyObject *method;
+    int flag;
+} __Pyx_CachedCFunction;
 
-/* ListCompAppend.proto */
-#if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
-static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
-    PyListObject* L = (PyListObject*) list;
-    Py_ssize_t len = Py_SIZE(list);
-    if (likely(L->allocated > len)) {
-        Py_INCREF(x);
-        PyList_SET_ITEM(list, len, x);
-        Py_SIZE(list) = len+1;
-        return 0;
-    }
-    return PyList_Append(list, x);
-}
+/* CallUnboundCMethod1.proto */
+static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg);
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg);
 #else
-#define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
+#define __Pyx_CallUnboundCMethod1(cfunc, self, arg)  __Pyx__CallUnboundCMethod1(cfunc, self, arg)
 #endif
+
+/* None.proto */
+static CYTHON_INLINE int __Pyx_div_int(int, int);
+
+/* UnaryNegOverflows.proto */
+#define UNARY_NEG_WOULD_OVERFLOW(x)\
+        (((x) < 0) & ((unsigned long)(x) == 0-(unsigned long)(x)))
 
 /* PyThreadStateGet.proto */
 #if CYTHON_FAST_THREAD_STATE
@@ -1100,6 +1137,31 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
 
+/* None.proto */
+static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname);
+
+/* ListCompAppend.proto */
+#if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
+static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
+    PyListObject* L = (PyListObject*) list;
+    Py_ssize_t len = Py_SIZE(list);
+    if (likely(L->allocated > len)) {
+        Py_INCREF(x);
+        PyList_SET_ITEM(list, len, x);
+        Py_SIZE(list) = len+1;
+        return 0;
+    }
+    return PyList_Append(list, x);
+}
+#else
+#define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
+#endif
+
+/* WriteUnraisableException.proto */
+static void __Pyx_WriteUnraisable(const char *name, int clineno,
+                                  int lineno, const char *filename,
+                                  int full_traceback, int nogil);
+
 /* IncludeStringH.proto */
 #include <string.h>
 
@@ -1116,6 +1178,9 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
 #else
 #define __Pyx_PyObject_GenericGetAttr PyObject_GenericGetAttr
 #endif
+
+/* SetVTable.proto */
+static int __Pyx_SetVtable(PyObject *dict, void *vtable);
 
 /* SetupReduce.proto */
 static int __Pyx_setup_reduce(PyObject* type_obj);
@@ -1218,6 +1283,12 @@ static void __Pyx_AddTraceback(const char *funcname, int c_line,
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
+
+/* FromPyCTupleUtility.proto */
+static __pyx_ctuple_int__and_int__and_int __pyx_convert__from_py___pyx_ctuple_int__and_int__and_int(PyObject *);
+
+/* ToPyCTupleUtility.proto */
+static PyObject* __pyx_convert__to_py___pyx_ctuple_int__and_int__and_int(__pyx_ctuple_int__and_int__and_int);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
@@ -1358,6 +1429,10 @@ static int __Pyx_check_binary_version(void);
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
+static PyObject *__pyx_f_6faster_8fastlist_8fastlist__cgetitem_int(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index); /* proto*/
+static PyObject *__pyx_f_6faster_8fastlist_8fastlist__cgetitem_slice(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_indices); /* proto*/
+static void __pyx_f_6faster_8fastlist_8fastlist__csetitem_int(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index, PyObject *__pyx_v_value); /* proto*/
+static void __pyx_f_6faster_8fastlist_8fastlist__csetitem_slice(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_indices, PyObject *__pyx_v_value); /* proto*/
 
 /* Module declarations from 'cpython.version' */
 
@@ -1447,12 +1522,14 @@ static PyTypeObject *__pyx_ptype_6faster_8fastlist_fastlist = 0;
 static PyTypeObject *__pyx_ptype_6faster_8fastlist___pyx_scope_struct____iter__ = 0;
 static PyTypeObject *__pyx_ptype_6faster_8fastlist___pyx_scope_struct_1___repr__ = 0;
 static PyTypeObject *__pyx_ptype_6faster_8fastlist___pyx_scope_struct_2_genexpr = 0;
+static int __pyx_f_6faster_8fastlist_memsize_from_length(int); /*proto*/
 #define __Pyx_MODULE_NAME "faster.fastlist"
 extern int __pyx_module_is_main_faster__fastlist;
 int __pyx_module_is_main_faster__fastlist = 0;
 
 /* Implementation of 'faster.fastlist' */
 static PyObject *__pyx_builtin_staticmethod;
+static PyObject *__pyx_builtin_MemoryError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_TypeError;
 static const char __pyx_k_[] = ", ";
@@ -1464,6 +1541,7 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_send[] = "send";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_class[] = "__class__";
 static const char __pyx_k_close[] = "close";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_throw[] = "throw";
@@ -1471,11 +1549,14 @@ static const char __pyx_k_length[] = "length";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_result[] = "result";
 static const char __pyx_k_genexpr[] = "genexpr";
+static const char __pyx_k_indices[] = "indices";
 static const char __pyx_k_fastlist[] = "fastlist";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_setstate[] = "__setstate__";
 static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
+static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_staticmethod[] = "staticmethod";
 static const char __pyx_k_from_sequence[] = "from_sequence";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
@@ -1485,11 +1566,14 @@ static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_faster_fastlist_pyx[] = "faster\\fastlist.pyx";
 static const char __pyx_k_repr___locals_genexpr[] = "__repr__.<locals>.genexpr";
+static const char __pyx_k_incompatible_index_type[] = "incompatible index type: ";
 static const char __pyx_k_fastlist_from_sequence_s[] = "fastlist.from_sequence([%s])";
 static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __reduce__ due to non-trivial __cinit__";
 static PyObject *__pyx_kp_u_;
+static PyObject *__pyx_n_s_MemoryError;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_n_s_args;
+static PyObject *__pyx_n_s_class;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_close;
 static PyObject *__pyx_n_s_faster_fastlist;
@@ -1501,11 +1585,14 @@ static PyObject *__pyx_n_s_from_sequence;
 static PyObject *__pyx_n_s_genexpr;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_i;
+static PyObject *__pyx_kp_u_incompatible_index_type;
+static PyObject *__pyx_n_s_indices;
 static PyObject *__pyx_n_s_iter;
 static PyObject *__pyx_n_s_length;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_s_no_default___reduce___due_to_non;
+static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
@@ -1522,30 +1609,66 @@ static PyObject *__pyx_n_s_throw;
 static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_length); /* proto */
 static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_2from_sequence(PyObject *__pyx_v_seq); /* proto */
 static void __pyx_pf_6faster_8fastlist_8fastlist_4__dealloc__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index); /* proto */
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_index); /* proto */
 static Py_ssize_t __pyx_pf_6faster_8fastlist_8fastlist_8__len__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_10__iter__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_8__repr___genexpr(PyObject *__pyx_self); /* proto */
 static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_13__repr__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self); /* proto */
-static int __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index, PyObject *__pyx_v_value); /* proto */
-static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_17__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_19__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_index, PyObject *__pyx_v_value); /* proto */
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_17resize(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_newlength); /* proto */
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_19__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_21__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_6faster_8fastlist_fastlist(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6faster_8fastlist___pyx_scope_struct____iter__(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6faster_8fastlist___pyx_scope_struct_1___repr__(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_tp_new_6faster_8fastlist___pyx_scope_struct_2_genexpr(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static __Pyx_CachedCFunction __pyx_umethod_PySlice_Type_indices = {0, &__pyx_n_s_indices, 0, 0, 0};
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_codeobj__5;
 /* Late includes */
 
-/* "faster/fastlist.pyx":8
+/* "faster/fastlist.pyx":7
+ * 
+ * 
+ * cdef int memsize_from_length(int length) nogil:             # <<<<<<<<<<<<<<
+ *     return length * sizeof(PyObject *)
+ * 
+ */
+
+static int __pyx_f_6faster_8fastlist_memsize_from_length(int __pyx_v_length) {
+  int __pyx_r;
+
+  /* "faster/fastlist.pyx":8
+ * 
+ * cdef int memsize_from_length(int length) nogil:
+ *     return length * sizeof(PyObject *)             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __pyx_r = (__pyx_v_length * (sizeof(PyObject *)));
+  goto __pyx_L0;
+
+  /* "faster/fastlist.pyx":7
+ * 
+ * 
+ * cdef int memsize_from_length(int length) nogil:             # <<<<<<<<<<<<<<
+ *     return length * sizeof(PyObject *)
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L0:;
+  return __pyx_r;
+}
+
+/* "faster/fastlist.pyx":12
  * 
  * cdef class fastlist:
  *     def __cinit__(self, int length = 0):             # <<<<<<<<<<<<<<
  *         self._length = length
- *         self._array = <PyObject **>PyMem_Malloc(length * sizeof(PyObject *))
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))
  */
 
 /* Python wrapper */
@@ -1576,7 +1699,7 @@ static int __pyx_pw_6faster_8fastlist_8fastlist_1__cinit__(PyObject *__pyx_v_sel
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 8, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 12, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1587,14 +1710,14 @@ static int __pyx_pw_6faster_8fastlist_8fastlist_1__cinit__(PyObject *__pyx_v_sel
       }
     }
     if (values[0]) {
-      __pyx_v_length = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_length == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 8, __pyx_L3_error)
+      __pyx_v_length = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_length == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 12, __pyx_L3_error)
     } else {
       __pyx_v_length = ((int)0);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 8, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 0, 0, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 12, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("faster.fastlist.fastlist.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1617,26 +1740,54 @@ static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6fast
   int __pyx_t_4;
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "faster/fastlist.pyx":9
+  /* "faster/fastlist.pyx":13
  * cdef class fastlist:
  *     def __cinit__(self, int length = 0):
  *         self._length = length             # <<<<<<<<<<<<<<
- *         self._array = <PyObject **>PyMem_Malloc(length * sizeof(PyObject *))
- *         cdef int i
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))
+ *         if self._array == NULL:
  */
   __pyx_v_self->_length = __pyx_v_length;
 
-  /* "faster/fastlist.pyx":10
+  /* "faster/fastlist.pyx":14
  *     def __cinit__(self, int length = 0):
  *         self._length = length
- *         self._array = <PyObject **>PyMem_Malloc(length * sizeof(PyObject *))             # <<<<<<<<<<<<<<
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))             # <<<<<<<<<<<<<<
+ *         if self._array == NULL:
+ *             raise MemoryError()
+ */
+  __pyx_v_self->_array = ((PyObject **)PyMem_Malloc(__pyx_f_6faster_8fastlist_memsize_from_length(__pyx_v_length)));
+
+  /* "faster/fastlist.pyx":15
+ *         self._length = length
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))
+ *         if self._array == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         cdef int i
+ */
+  __pyx_t_1 = ((__pyx_v_self->_array == NULL) != 0);
+  if (unlikely(__pyx_t_1)) {
+
+    /* "faster/fastlist.pyx":16
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))
+ *         if self._array == NULL:
+ *             raise MemoryError()             # <<<<<<<<<<<<<<
  *         cdef int i
  *         if length > 0:
  */
-  __pyx_v_self->_array = ((PyObject **)PyMem_Malloc((__pyx_v_length * (sizeof(PyObject *)))));
+    PyErr_NoMemory(); __PYX_ERR(0, 16, __pyx_L1_error)
 
-  /* "faster/fastlist.pyx":12
- *         self._array = <PyObject **>PyMem_Malloc(length * sizeof(PyObject *))
+    /* "faster/fastlist.pyx":15
+ *         self._length = length
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))
+ *         if self._array == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         cdef int i
+ */
+  }
+
+  /* "faster/fastlist.pyx":18
+ *             raise MemoryError()
  *         cdef int i
  *         if length > 0:             # <<<<<<<<<<<<<<
  *             for i in range(length):
@@ -1645,7 +1796,7 @@ static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6fast
   __pyx_t_1 = ((__pyx_v_length > 0) != 0);
   if (__pyx_t_1) {
 
-    /* "faster/fastlist.pyx":13
+    /* "faster/fastlist.pyx":19
  *         cdef int i
  *         if length > 0:
  *             for i in range(length):             # <<<<<<<<<<<<<<
@@ -1657,7 +1808,7 @@ static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6fast
     for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_i = __pyx_t_4;
 
-      /* "faster/fastlist.pyx":14
+      /* "faster/fastlist.pyx":20
  *         if length > 0:
  *             for i in range(length):
  *                 Py_INCREF(None)             # <<<<<<<<<<<<<<
@@ -1666,7 +1817,7 @@ static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6fast
  */
       Py_INCREF(Py_None);
 
-      /* "faster/fastlist.pyx":15
+      /* "faster/fastlist.pyx":21
  *             for i in range(length):
  *                 Py_INCREF(None)
  *                 self._array[i] = <PyObject *>None             # <<<<<<<<<<<<<<
@@ -1676,8 +1827,8 @@ static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6fast
       (__pyx_v_self->_array[__pyx_v_i]) = ((PyObject *)Py_None);
     }
 
-    /* "faster/fastlist.pyx":12
- *         self._array = <PyObject **>PyMem_Malloc(length * sizeof(PyObject *))
+    /* "faster/fastlist.pyx":18
+ *             raise MemoryError()
  *         cdef int i
  *         if length > 0:             # <<<<<<<<<<<<<<
  *             for i in range(length):
@@ -1685,21 +1836,26 @@ static int __pyx_pf_6faster_8fastlist_8fastlist___cinit__(struct __pyx_obj_6fast
  */
   }
 
-  /* "faster/fastlist.pyx":8
+  /* "faster/fastlist.pyx":12
  * 
  * cdef class fastlist:
  *     def __cinit__(self, int length = 0):             # <<<<<<<<<<<<<<
  *         self._length = length
- *         self._array = <PyObject **>PyMem_Malloc(length * sizeof(PyObject *))
+ *         self._array = <PyObject **>PyMem_Malloc(memsize_from_length(length))
  */
 
   /* function exit code */
   __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("faster.fastlist.fastlist.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "faster/fastlist.pyx":18
+/* "faster/fastlist.pyx":24
  * 
  *     @staticmethod
  *     def from_sequence(seq):             # <<<<<<<<<<<<<<
@@ -1734,7 +1890,7 @@ static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_3from_sequence(CYTHON_UNUS
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "from_sequence") < 0)) __PYX_ERR(0, 18, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "from_sequence") < 0)) __PYX_ERR(0, 24, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -1745,7 +1901,7 @@ static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_3from_sequence(CYTHON_UNUS
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("from_sequence", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 18, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("from_sequence", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 24, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("faster.fastlist.fastlist.from_sequence", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1770,60 +1926,60 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_2from_sequence(PyObject *_
   int __pyx_t_5;
   __Pyx_RefNannySetupContext("from_sequence", 0);
 
-  /* "faster/fastlist.pyx":19
+  /* "faster/fastlist.pyx":25
  *     @staticmethod
  *     def from_sequence(seq):
  *         cdef fastlist result = fastlist(len(seq))             # <<<<<<<<<<<<<<
  *         cdef int i
  *         for i in range(len(seq)):
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 19, __pyx_L1_error)
-  __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_2 = PyInt_FromSsize_t(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist), __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist), __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_result = ((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "faster/fastlist.pyx":21
+  /* "faster/fastlist.pyx":27
  *         cdef fastlist result = fastlist(len(seq))
  *         cdef int i
  *         for i in range(len(seq)):             # <<<<<<<<<<<<<<
  *             Py_INCREF(seq[i])
  *             result._array[i] = <PyObject *>seq[i]
  */
-  __pyx_t_1 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_1 = PyObject_Length(__pyx_v_seq); if (unlikely(__pyx_t_1 == ((Py_ssize_t)-1))) __PYX_ERR(0, 27, __pyx_L1_error)
   __pyx_t_4 = __pyx_t_1;
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "faster/fastlist.pyx":22
+    /* "faster/fastlist.pyx":28
  *         cdef int i
  *         for i in range(len(seq)):
  *             Py_INCREF(seq[i])             # <<<<<<<<<<<<<<
  *             result._array[i] = <PyObject *>seq[i]
  *         return result
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_seq, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_seq, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     Py_INCREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "faster/fastlist.pyx":23
+    /* "faster/fastlist.pyx":29
  *         for i in range(len(seq)):
  *             Py_INCREF(seq[i])
  *             result._array[i] = <PyObject *>seq[i]             # <<<<<<<<<<<<<<
  *         return result
  * 
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_seq, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_seq, __pyx_v_i, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     (__pyx_v_result->_array[__pyx_v_i]) = ((PyObject *)__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "faster/fastlist.pyx":24
+  /* "faster/fastlist.pyx":30
  *             Py_INCREF(seq[i])
  *             result._array[i] = <PyObject *>seq[i]
  *         return result             # <<<<<<<<<<<<<<
@@ -1835,7 +1991,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_2from_sequence(PyObject *_
   __pyx_r = ((PyObject *)__pyx_v_result);
   goto __pyx_L0;
 
-  /* "faster/fastlist.pyx":18
+  /* "faster/fastlist.pyx":24
  * 
  *     @staticmethod
  *     def from_sequence(seq):             # <<<<<<<<<<<<<<
@@ -1856,7 +2012,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_2from_sequence(PyObject *_
   return __pyx_r;
 }
 
-/* "faster/fastlist.pyx":26
+/* "faster/fastlist.pyx":32
  *         return result
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1884,7 +2040,7 @@ static void __pyx_pf_6faster_8fastlist_8fastlist_4__dealloc__(struct __pyx_obj_6
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("__dealloc__", 0);
 
-  /* "faster/fastlist.pyx":28
+  /* "faster/fastlist.pyx":34
  *     def __dealloc__(self):
  *         cdef int i
  *         for i in range(self._length):             # <<<<<<<<<<<<<<
@@ -1896,7 +2052,7 @@ static void __pyx_pf_6faster_8fastlist_8fastlist_4__dealloc__(struct __pyx_obj_6
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
 
-    /* "faster/fastlist.pyx":29
+    /* "faster/fastlist.pyx":35
  *         cdef int i
  *         for i in range(self._length):
  *             Py_DECREF(<object>self._array[i])             # <<<<<<<<<<<<<<
@@ -1908,7 +2064,7 @@ static void __pyx_pf_6faster_8fastlist_8fastlist_4__dealloc__(struct __pyx_obj_6
     Py_DECREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "faster/fastlist.pyx":30
+    /* "faster/fastlist.pyx":36
  *         for i in range(self._length):
  *             Py_DECREF(<object>self._array[i])
  *             self._array[i] = NULL             # <<<<<<<<<<<<<<
@@ -1918,16 +2074,16 @@ static void __pyx_pf_6faster_8fastlist_8fastlist_4__dealloc__(struct __pyx_obj_6
     (__pyx_v_self->_array[__pyx_v_i]) = NULL;
   }
 
-  /* "faster/fastlist.pyx":31
+  /* "faster/fastlist.pyx":37
  *             Py_DECREF(<object>self._array[i])
  *             self._array[i] = NULL
  *         PyMem_Free(self._array)             # <<<<<<<<<<<<<<
  * 
- *     def __getitem__(self, int index):
+ *     cdef object _cgetitem_int(self, int index):
  */
   PyMem_Free(__pyx_v_self->_array);
 
-  /* "faster/fastlist.pyx":26
+  /* "faster/fastlist.pyx":32
  *         return result
  * 
  *     def __dealloc__(self):             # <<<<<<<<<<<<<<
@@ -1939,58 +2095,35 @@ static void __pyx_pf_6faster_8fastlist_8fastlist_4__dealloc__(struct __pyx_obj_6
   __Pyx_RefNannyFinishContext();
 }
 
-/* "faster/fastlist.pyx":33
+/* "faster/fastlist.pyx":39
  *         PyMem_Free(self._array)
  * 
- *     def __getitem__(self, int index):             # <<<<<<<<<<<<<<
+ *     cdef object _cgetitem_int(self, int index):             # <<<<<<<<<<<<<<
  *         return <object>self._array[index]
  * 
  */
 
-/* Python wrapper */
-static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_7__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_arg_index); /*proto*/
-static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_7__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_arg_index) {
-  int __pyx_v_index;
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__getitem__ (wrapper)", 0);
-  assert(__pyx_arg_index); {
-    __pyx_v_index = __Pyx_PyInt_As_int(__pyx_arg_index); if (unlikely((__pyx_v_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 33, __pyx_L3_error)
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("faster.fastlist.fastlist.__getitem__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return NULL;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((int)__pyx_v_index));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index) {
+static PyObject *__pyx_f_6faster_8fastlist_8fastlist__cgetitem_int(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__getitem__", 0);
+  __Pyx_RefNannySetupContext("_cgetitem_int", 0);
 
-  /* "faster/fastlist.pyx":34
+  /* "faster/fastlist.pyx":40
  * 
- *     def __getitem__(self, int index):
+ *     cdef object _cgetitem_int(self, int index):
  *         return <object>self._array[index]             # <<<<<<<<<<<<<<
  * 
- *     def __len__(self):
+ *     cdef object _cgetitem_slice(self, slice indices):
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(((PyObject *)(__pyx_v_self->_array[__pyx_v_index])));
   __pyx_r = ((PyObject *)(__pyx_v_self->_array[__pyx_v_index]));
   goto __pyx_L0;
 
-  /* "faster/fastlist.pyx":33
+  /* "faster/fastlist.pyx":39
  *         PyMem_Free(self._array)
  * 
- *     def __getitem__(self, int index):             # <<<<<<<<<<<<<<
+ *     cdef object _cgetitem_int(self, int index):             # <<<<<<<<<<<<<<
  *         return <object>self._array[index]
  * 
  */
@@ -2002,8 +2135,367 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(struct __pyx_
   return __pyx_r;
 }
 
-/* "faster/fastlist.pyx":36
+/* "faster/fastlist.pyx":42
  *         return <object>self._array[index]
+ * 
+ *     cdef object _cgetitem_slice(self, slice indices):             # <<<<<<<<<<<<<<
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ */
+
+static PyObject *__pyx_f_6faster_8fastlist_8fastlist__cgetitem_slice(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_indices) {
+  __pyx_ctuple_int__and_int__and_int __pyx_v_dests;
+  struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_result = 0;
+  int __pyx_v_i;
+  int __pyx_v_j;
+  PyObject *__pyx_v_item;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  __pyx_ctuple_int__and_int__and_int __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  PyObject *(*__pyx_t_7)(PyObject *);
+  __Pyx_RefNannySetupContext("_cgetitem_slice", 0);
+
+  /* "faster/fastlist.pyx":43
+ * 
+ *     cdef object _cgetitem_slice(self, slice indices):
+ *         cdef (int, int, int) dests = indices.indices(self._length)             # <<<<<<<<<<<<<<
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ *         cdef int i = 0, j
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PySlice_Type_indices, __pyx_v_indices, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = __pyx_convert__from_py___pyx_ctuple_int__and_int__and_int(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_dests = __pyx_t_3;
+
+  /* "faster/fastlist.pyx":44
+ *     cdef object _cgetitem_slice(self, slice indices):
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])             # <<<<<<<<<<<<<<
+ *         cdef int i = 0, j
+ *         cdef PyObject* item
+ */
+  __pyx_t_4 = (__pyx_v_dests.f1 - __pyx_v_dests.f0);
+  __pyx_t_5 = __pyx_v_dests.f2;
+  if (unlikely(__pyx_t_5 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
+    __PYX_ERR(0, 44, __pyx_L1_error)
+  }
+  else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_t_5 == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_4))) {
+    PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
+    __PYX_ERR(0, 44, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_PyInt_From_int(__Pyx_div_int(__pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_result = ((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "faster/fastlist.pyx":45
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ *         cdef int i = 0, j             # <<<<<<<<<<<<<<
+ *         cdef PyObject* item
+ *         for j in range(*dests):
+ */
+  __pyx_v_i = 0;
+
+  /* "faster/fastlist.pyx":47
+ *         cdef int i = 0, j
+ *         cdef PyObject* item
+ *         for j in range(*dests):             # <<<<<<<<<<<<<<
+ *             item = self._array[j]
+ *             Py_INCREF(<object>item)
+ */
+  __pyx_t_1 = __pyx_convert__to_py___pyx_ctuple_int__and_int__and_int(__pyx_v_dests); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
+    __pyx_t_7 = NULL;
+  } else {
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 47, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_7)) {
+      if (likely(PyList_CheckExact(__pyx_t_2))) {
+        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 47, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      } else {
+        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 47, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      }
+    } else {
+      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
+      if (unlikely(!__pyx_t_1)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 47, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_v_j = __pyx_t_5;
+
+    /* "faster/fastlist.pyx":48
+ *         cdef PyObject* item
+ *         for j in range(*dests):
+ *             item = self._array[j]             # <<<<<<<<<<<<<<
+ *             Py_INCREF(<object>item)
+ *             result._array[i] = item
+ */
+    __pyx_v_item = (__pyx_v_self->_array[__pyx_v_j]);
+
+    /* "faster/fastlist.pyx":49
+ *         for j in range(*dests):
+ *             item = self._array[j]
+ *             Py_INCREF(<object>item)             # <<<<<<<<<<<<<<
+ *             result._array[i] = item
+ *             i += 1
+ */
+    Py_INCREF(((PyObject *)__pyx_v_item));
+
+    /* "faster/fastlist.pyx":50
+ *             item = self._array[j]
+ *             Py_INCREF(<object>item)
+ *             result._array[i] = item             # <<<<<<<<<<<<<<
+ *             i += 1
+ *         return result
+ */
+    (__pyx_v_result->_array[__pyx_v_i]) = __pyx_v_item;
+
+    /* "faster/fastlist.pyx":51
+ *             Py_INCREF(<object>item)
+ *             result._array[i] = item
+ *             i += 1             # <<<<<<<<<<<<<<
+ *         return result
+ * 
+ */
+    __pyx_v_i = (__pyx_v_i + 1);
+
+    /* "faster/fastlist.pyx":47
+ *         cdef int i = 0, j
+ *         cdef PyObject* item
+ *         for j in range(*dests):             # <<<<<<<<<<<<<<
+ *             item = self._array[j]
+ *             Py_INCREF(<object>item)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "faster/fastlist.pyx":52
+ *             result._array[i] = item
+ *             i += 1
+ *         return result             # <<<<<<<<<<<<<<
+ * 
+ *     def __getitem__(self, index):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(((PyObject *)__pyx_v_result));
+  __pyx_r = ((PyObject *)__pyx_v_result);
+  goto __pyx_L0;
+
+  /* "faster/fastlist.pyx":42
+ *         return <object>self._array[index]
+ * 
+ *     cdef object _cgetitem_slice(self, slice indices):             # <<<<<<<<<<<<<<
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_AddTraceback("faster.fastlist.fastlist._cgetitem_slice", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_result);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "faster/fastlist.pyx":54
+ *         return result
+ * 
+ *     def __getitem__(self, index):             # <<<<<<<<<<<<<<
+ *         if isinstance(index, int):
+ *             return self._cgetitem_int(index)
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_7__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_index); /*proto*/
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_7__getitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_index) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__getitem__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((PyObject *)__pyx_v_index));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_6__getitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_index) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  __Pyx_RefNannySetupContext("__getitem__", 0);
+
+  /* "faster/fastlist.pyx":55
+ * 
+ *     def __getitem__(self, index):
+ *         if isinstance(index, int):             # <<<<<<<<<<<<<<
+ *             return self._cgetitem_int(index)
+ *         elif isinstance(index, slice):
+ */
+  __pyx_t_1 = PyInt_Check(__pyx_v_index); 
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+
+    /* "faster/fastlist.pyx":56
+ *     def __getitem__(self, index):
+ *         if isinstance(index, int):
+ *             return self._cgetitem_int(index)             # <<<<<<<<<<<<<<
+ *         elif isinstance(index, slice):
+ *             return self._cgetitem_slice(index)
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 56, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_6faster_8fastlist_fastlist *)__pyx_v_self->__pyx_vtab)->_cgetitem_int(__pyx_v_self, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "faster/fastlist.pyx":55
+ * 
+ *     def __getitem__(self, index):
+ *         if isinstance(index, int):             # <<<<<<<<<<<<<<
+ *             return self._cgetitem_int(index)
+ *         elif isinstance(index, slice):
+ */
+  }
+
+  /* "faster/fastlist.pyx":57
+ *         if isinstance(index, int):
+ *             return self._cgetitem_int(index)
+ *         elif isinstance(index, slice):             # <<<<<<<<<<<<<<
+ *             return self._cgetitem_slice(index)
+ *         raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
+ */
+  __pyx_t_2 = PySlice_Check(__pyx_v_index); 
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (__pyx_t_1) {
+
+    /* "faster/fastlist.pyx":58
+ *             return self._cgetitem_int(index)
+ *         elif isinstance(index, slice):
+ *             return self._cgetitem_slice(index)             # <<<<<<<<<<<<<<
+ *         raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
+ * 
+ */
+    __Pyx_XDECREF(__pyx_r);
+    if (!(likely(PySlice_Check(__pyx_v_index))||((__pyx_v_index) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "slice", Py_TYPE(__pyx_v_index)->tp_name), 0))) __PYX_ERR(0, 58, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_6faster_8fastlist_fastlist *)__pyx_v_self->__pyx_vtab)->_cgetitem_slice(__pyx_v_self, ((PyObject*)__pyx_v_index)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 58, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_r = __pyx_t_4;
+    __pyx_t_4 = 0;
+    goto __pyx_L0;
+
+    /* "faster/fastlist.pyx":57
+ *         if isinstance(index, int):
+ *             return self._cgetitem_int(index)
+ *         elif isinstance(index, slice):             # <<<<<<<<<<<<<<
+ *             return self._cgetitem_slice(index)
+ *         raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
+ */
+  }
+
+  /* "faster/fastlist.pyx":59
+ *         elif isinstance(index, slice):
+ *             return self._cgetitem_slice(index)
+ *         raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))             # <<<<<<<<<<<<<<
+ * 
+ *     def __len__(self):
+ */
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_index, __pyx_n_s_class); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = PyObject_Repr(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_incompatible_index_type, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __PYX_ERR(0, 59, __pyx_L1_error)
+
+  /* "faster/fastlist.pyx":54
+ *         return result
+ * 
+ *     def __getitem__(self, index):             # <<<<<<<<<<<<<<
+ *         if isinstance(index, int):
+ *             return self._cgetitem_int(index)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("faster.fastlist.fastlist.__getitem__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "faster/fastlist.pyx":61
+ *         raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
  *         return self._length
@@ -2028,7 +2520,7 @@ static Py_ssize_t __pyx_pf_6faster_8fastlist_8fastlist_8__len__(struct __pyx_obj
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__len__", 0);
 
-  /* "faster/fastlist.pyx":37
+  /* "faster/fastlist.pyx":62
  * 
  *     def __len__(self):
  *         return self._length             # <<<<<<<<<<<<<<
@@ -2038,8 +2530,8 @@ static Py_ssize_t __pyx_pf_6faster_8fastlist_8fastlist_8__len__(struct __pyx_obj
   __pyx_r = __pyx_v_self->_length;
   goto __pyx_L0;
 
-  /* "faster/fastlist.pyx":36
- *         return <object>self._array[index]
+  /* "faster/fastlist.pyx":61
+ *         raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
  * 
  *     def __len__(self):             # <<<<<<<<<<<<<<
  *         return self._length
@@ -2053,7 +2545,7 @@ static Py_ssize_t __pyx_pf_6faster_8fastlist_8fastlist_8__len__(struct __pyx_obj
 }
 static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_12generator(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "faster/fastlist.pyx":39
+/* "faster/fastlist.pyx":64
  *         return self._length
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -2083,7 +2575,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_10__iter__(struct __pyx_ob
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_6faster_8fastlist___pyx_scope_struct____iter__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 39, __pyx_L1_error)
+    __PYX_ERR(0, 64, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -2091,7 +2583,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_10__iter__(struct __pyx_ob
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_6faster_8fastlist_8fastlist_12generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iter, __pyx_n_s_fastlist___iter, __pyx_n_s_faster_fastlist); if (unlikely(!gen)) __PYX_ERR(0, 39, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_6faster_8fastlist_8fastlist_12generator, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_iter, __pyx_n_s_fastlist___iter, __pyx_n_s_faster_fastlist); if (unlikely(!gen)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -2124,9 +2616,9 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_12generator(__pyx_Coroutin
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 64, __pyx_L1_error)
 
-  /* "faster/fastlist.pyx":41
+  /* "faster/fastlist.pyx":66
  *     def __iter__(self):
  *         cdef int i
  *         for i in range(self._length):             # <<<<<<<<<<<<<<
@@ -2138,7 +2630,7 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_12generator(__pyx_Coroutin
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_cur_scope->__pyx_v_i = __pyx_t_3;
 
-    /* "faster/fastlist.pyx":42
+    /* "faster/fastlist.pyx":67
  *         cdef int i
  *         for i in range(self._length):
  *             yield <object>self._array[i]             # <<<<<<<<<<<<<<
@@ -2160,11 +2652,11 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_12generator(__pyx_Coroutin
     __pyx_t_1 = __pyx_cur_scope->__pyx_t_0;
     __pyx_t_2 = __pyx_cur_scope->__pyx_t_1;
     __pyx_t_3 = __pyx_cur_scope->__pyx_t_2;
-    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 42, __pyx_L1_error)
+    if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 67, __pyx_L1_error)
   }
   CYTHON_MAYBE_UNUSED_VAR(__pyx_cur_scope);
 
-  /* "faster/fastlist.pyx":39
+  /* "faster/fastlist.pyx":64
  *         return self._length
  * 
  *     def __iter__(self):             # <<<<<<<<<<<<<<
@@ -2188,7 +2680,7 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_12generator(__pyx_Coroutin
   return __pyx_r;
 }
 
-/* "faster/fastlist.pyx":44
+/* "faster/fastlist.pyx":69
  *             yield <object>self._array[i]
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -2210,12 +2702,12 @@ static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_14__repr__(PyObject *__pyx
 }
 static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1(__pyx_CoroutineObject *__pyx_generator, CYTHON_UNUSED PyThreadState *__pyx_tstate, PyObject *__pyx_sent_value); /* proto */
 
-/* "faster/fastlist.pyx":45
+/* "faster/fastlist.pyx":70
  * 
  *     def __repr__(self):
  *         return 'fastlist.from_sequence([%s])' % ', '.join(repr(v) for v in self)             # <<<<<<<<<<<<<<
  * 
- *     def __setitem__(self, int index, object value):
+ *     cdef void _csetitem_int(self, int index, object value):
  */
 
 static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_8__repr___genexpr(PyObject *__pyx_self) {
@@ -2227,7 +2719,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_8__repr___genexpr(PyObject
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_2_genexpr *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 45, __pyx_L1_error)
+    __PYX_ERR(0, 70, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -2235,7 +2727,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_8__repr___genexpr(PyObject
   __Pyx_INCREF(((PyObject *)__pyx_cur_scope->__pyx_outer_scope));
   __Pyx_GIVEREF(__pyx_cur_scope->__pyx_outer_scope);
   {
-    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_repr___locals_genexpr, __pyx_n_s_faster_fastlist); if (unlikely(!gen)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_CoroutineObject *gen = __Pyx_Generator_New((__pyx_coroutine_body_t) __pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1, NULL, (PyObject *) __pyx_cur_scope, __pyx_n_s_genexpr, __pyx_n_s_repr___locals_genexpr, __pyx_n_s_faster_fastlist); if (unlikely(!gen)) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_DECREF(__pyx_cur_scope);
     __Pyx_RefNannyFinishContext();
     return (PyObject *) gen;
@@ -2268,34 +2760,34 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1(__py
     return NULL;
   }
   __pyx_L3_first_run:;
-  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 45, __pyx_L1_error)
-  __pyx_r = PyList_New(0); if (unlikely(!__pyx_r)) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (unlikely(!__pyx_sent_value)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __pyx_r = PyList_New(0); if (unlikely(!__pyx_r)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_r);
-  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 45, __pyx_L1_error) }
+  if (unlikely(!__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)) { __Pyx_RaiseClosureNameError("self"); __PYX_ERR(0, 70, __pyx_L1_error) }
   if (likely(PyList_CheckExact(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self))) || PyTuple_CheckExact(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self))) {
     __pyx_t_1 = ((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self); __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(((PyObject *)__pyx_cur_scope->__pyx_outer_scope->__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 70, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 70, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 45, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -2305,7 +2797,7 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1(__py
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 45, __pyx_L1_error)
+          else __PYX_ERR(0, 70, __pyx_L1_error)
         }
         break;
       }
@@ -2315,9 +2807,9 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1(__py
     __Pyx_XDECREF_SET(__pyx_cur_scope->__pyx_v_v, __pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_4 = PyObject_Repr(__pyx_cur_scope->__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_4 = PyObject_Repr(__pyx_cur_scope->__pyx_v_v); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_r, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 45, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_r, (PyObject*)__pyx_t_4))) __PYX_ERR(0, 70, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2341,7 +2833,7 @@ static PyObject *__pyx_gb_6faster_8fastlist_8fastlist_8__repr___2generator1(__py
   return __pyx_r;
 }
 
-/* "faster/fastlist.pyx":44
+/* "faster/fastlist.pyx":69
  *             yield <object>self._array[i]
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -2360,7 +2852,7 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_13__repr__(struct __pyx_ob
   if (unlikely(!__pyx_cur_scope)) {
     __pyx_cur_scope = ((struct __pyx_obj_6faster_8fastlist___pyx_scope_struct_1___repr__ *)Py_None);
     __Pyx_INCREF(Py_None);
-    __PYX_ERR(0, 44, __pyx_L1_error)
+    __PYX_ERR(0, 69, __pyx_L1_error)
   } else {
     __Pyx_GOTREF(__pyx_cur_scope);
   }
@@ -2368,30 +2860,30 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_13__repr__(struct __pyx_ob
   __Pyx_INCREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
   __Pyx_GIVEREF((PyObject *)__pyx_cur_scope->__pyx_v_self);
 
-  /* "faster/fastlist.pyx":45
+  /* "faster/fastlist.pyx":70
  * 
  *     def __repr__(self):
  *         return 'fastlist.from_sequence([%s])' % ', '.join(repr(v) for v in self)             # <<<<<<<<<<<<<<
  * 
- *     def __setitem__(self, int index, object value):
+ *     cdef void _csetitem_int(self, int index, object value):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_pf_6faster_8fastlist_8fastlist_8__repr___genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = __pyx_pf_6faster_8fastlist_8fastlist_8__repr___genexpr(((PyObject*)__pyx_cur_scope)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Generator_Next(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyUnicode_Join(__pyx_kp_u_, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_1 = PyUnicode_Join(__pyx_kp_u_, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_fastlist_from_sequence_s, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __pyx_t_2 = PyUnicode_Format(__pyx_kp_u_fastlist_from_sequence_s, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 70, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "faster/fastlist.pyx":44
+  /* "faster/fastlist.pyx":69
  *             yield <object>self._array[i]
  * 
  *     def __repr__(self):             # <<<<<<<<<<<<<<
@@ -2412,67 +2904,572 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_13__repr__(struct __pyx_ob
   return __pyx_r;
 }
 
-/* "faster/fastlist.pyx":47
+/* "faster/fastlist.pyx":72
  *         return 'fastlist.from_sequence([%s])' % ', '.join(repr(v) for v in self)
  * 
- *     def __setitem__(self, int index, object value):             # <<<<<<<<<<<<<<
+ *     cdef void _csetitem_int(self, int index, object value):             # <<<<<<<<<<<<<<
  *         Py_INCREF(value)
  *         self._array[index] = <PyObject *>value
  */
 
+static void __pyx_f_6faster_8fastlist_8fastlist__csetitem_int(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index, PyObject *__pyx_v_value) {
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("_csetitem_int", 0);
+
+  /* "faster/fastlist.pyx":73
+ * 
+ *     cdef void _csetitem_int(self, int index, object value):
+ *         Py_INCREF(value)             # <<<<<<<<<<<<<<
+ *         self._array[index] = <PyObject *>value
+ * 
+ */
+  Py_INCREF(__pyx_v_value);
+
+  /* "faster/fastlist.pyx":74
+ *     cdef void _csetitem_int(self, int index, object value):
+ *         Py_INCREF(value)
+ *         self._array[index] = <PyObject *>value             # <<<<<<<<<<<<<<
+ * 
+ *     cdef void _csetitem_slice(self, slice indices, object value):
+ */
+  (__pyx_v_self->_array[__pyx_v_index]) = ((PyObject *)__pyx_v_value);
+
+  /* "faster/fastlist.pyx":72
+ *         return 'fastlist.from_sequence([%s])' % ', '.join(repr(v) for v in self)
+ * 
+ *     cdef void _csetitem_int(self, int index, object value):             # <<<<<<<<<<<<<<
+ *         Py_INCREF(value)
+ *         self._array[index] = <PyObject *>value
+ */
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "faster/fastlist.pyx":76
+ *         self._array[index] = <PyObject *>value
+ * 
+ *     cdef void _csetitem_slice(self, slice indices, object value):             # <<<<<<<<<<<<<<
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ */
+
+static void __pyx_f_6faster_8fastlist_8fastlist__csetitem_slice(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_indices, PyObject *__pyx_v_value) {
+  __pyx_ctuple_int__and_int__and_int __pyx_v_dests;
+  CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_result = 0;
+  int __pyx_v_i;
+  int __pyx_v_j;
+  PyObject *__pyx_v_item = 0;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  __pyx_ctuple_int__and_int__and_int __pyx_t_3;
+  int __pyx_t_4;
+  int __pyx_t_5;
+  Py_ssize_t __pyx_t_6;
+  PyObject *(*__pyx_t_7)(PyObject *);
+  __Pyx_RefNannySetupContext("_csetitem_slice", 0);
+
+  /* "faster/fastlist.pyx":77
+ * 
+ *     cdef void _csetitem_slice(self, slice indices, object value):
+ *         cdef (int, int, int) dests = indices.indices(self._length)             # <<<<<<<<<<<<<<
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ *         cdef int i = 0, j
+ */
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PySlice_Type_indices, __pyx_v_indices, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_3 = __pyx_convert__from_py___pyx_ctuple_int__and_int__and_int(__pyx_t_2); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 77, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_dests = __pyx_t_3;
+
+  /* "faster/fastlist.pyx":78
+ *     cdef void _csetitem_slice(self, slice indices, object value):
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])             # <<<<<<<<<<<<<<
+ *         cdef int i = 0, j
+ *         cdef object item
+ */
+  __pyx_t_4 = (__pyx_v_dests.f1 - __pyx_v_dests.f0);
+  __pyx_t_5 = __pyx_v_dests.f2;
+  if (unlikely(__pyx_t_5 == 0)) {
+    PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
+    __PYX_ERR(0, 78, __pyx_L1_error)
+  }
+  else if (sizeof(int) == sizeof(long) && (!(((int)-1) > 0)) && unlikely(__pyx_t_5 == (int)-1)  && unlikely(UNARY_NEG_WOULD_OVERFLOW(__pyx_t_4))) {
+    PyErr_SetString(PyExc_OverflowError, "value too large to perform division");
+    __PYX_ERR(0, 78, __pyx_L1_error)
+  }
+  __pyx_t_2 = __Pyx_PyInt_From_int(__Pyx_div_int(__pyx_t_4, __pyx_t_5)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_result = ((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "faster/fastlist.pyx":79
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ *         cdef int i = 0, j             # <<<<<<<<<<<<<<
+ *         cdef object item
+ *         for j in range(*dests):
+ */
+  __pyx_v_i = 0;
+
+  /* "faster/fastlist.pyx":81
+ *         cdef int i = 0, j
+ *         cdef object item
+ *         for j in range(*dests):             # <<<<<<<<<<<<<<
+ *             item = value[j]
+ *             Py_INCREF(item)
+ */
+  __pyx_t_1 = __pyx_convert__to_py___pyx_ctuple_int__and_int__and_int(__pyx_v_dests); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PySequence_Tuple(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
+    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
+    __pyx_t_7 = NULL;
+  } else {
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 81, __pyx_L1_error)
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_7)) {
+      if (likely(PyList_CheckExact(__pyx_t_2))) {
+        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      } else {
+        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+        #else
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        #endif
+      }
+    } else {
+      __pyx_t_1 = __pyx_t_7(__pyx_t_2);
+      if (unlikely(!__pyx_t_1)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 81, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_1);
+    }
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_v_j = __pyx_t_5;
+
+    /* "faster/fastlist.pyx":82
+ *         cdef object item
+ *         for j in range(*dests):
+ *             item = value[j]             # <<<<<<<<<<<<<<
+ *             Py_INCREF(item)
+ *             self._array[i] = <PyObject *>item
+ */
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_value, __pyx_v_j, int, 1, __Pyx_PyInt_From_int, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_XDECREF_SET(__pyx_v_item, __pyx_t_1);
+    __pyx_t_1 = 0;
+
+    /* "faster/fastlist.pyx":83
+ *         for j in range(*dests):
+ *             item = value[j]
+ *             Py_INCREF(item)             # <<<<<<<<<<<<<<
+ *             self._array[i] = <PyObject *>item
+ *             i += 1
+ */
+    Py_INCREF(__pyx_v_item);
+
+    /* "faster/fastlist.pyx":84
+ *             item = value[j]
+ *             Py_INCREF(item)
+ *             self._array[i] = <PyObject *>item             # <<<<<<<<<<<<<<
+ *             i += 1
+ * 
+ */
+    (__pyx_v_self->_array[__pyx_v_i]) = ((PyObject *)__pyx_v_item);
+
+    /* "faster/fastlist.pyx":85
+ *             Py_INCREF(item)
+ *             self._array[i] = <PyObject *>item
+ *             i += 1             # <<<<<<<<<<<<<<
+ * 
+ *     def __setitem__(self, index, object value):
+ */
+    __pyx_v_i = (__pyx_v_i + 1);
+
+    /* "faster/fastlist.pyx":81
+ *         cdef int i = 0, j
+ *         cdef object item
+ *         for j in range(*dests):             # <<<<<<<<<<<<<<
+ *             item = value[j]
+ *             Py_INCREF(item)
+ */
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "faster/fastlist.pyx":76
+ *         self._array[index] = <PyObject *>value
+ * 
+ *     cdef void _csetitem_slice(self, slice indices, object value):             # <<<<<<<<<<<<<<
+ *         cdef (int, int, int) dests = indices.indices(self._length)
+ *         cdef fastlist result = fastlist((dests[1] - dests[0]) // dests[2])
+ */
+
+  /* function exit code */
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_WriteUnraisable("faster.fastlist.fastlist._csetitem_slice", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __pyx_L0:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_result);
+  __Pyx_XDECREF(__pyx_v_item);
+  __Pyx_RefNannyFinishContext();
+}
+
+/* "faster/fastlist.pyx":87
+ *             i += 1
+ * 
+ *     def __setitem__(self, index, object value):             # <<<<<<<<<<<<<<
+ *         if isinstance(index, int):
+ *             self._csetitem_int(index, value)
+ */
+
 /* Python wrapper */
-static int __pyx_pw_6faster_8fastlist_8fastlist_16__setitem__(PyObject *__pyx_v_self, PyObject *__pyx_arg_index, PyObject *__pyx_v_value); /*proto*/
-static int __pyx_pw_6faster_8fastlist_8fastlist_16__setitem__(PyObject *__pyx_v_self, PyObject *__pyx_arg_index, PyObject *__pyx_v_value) {
-  int __pyx_v_index;
+static int __pyx_pw_6faster_8fastlist_8fastlist_16__setitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_index, PyObject *__pyx_v_value); /*proto*/
+static int __pyx_pw_6faster_8fastlist_8fastlist_16__setitem__(PyObject *__pyx_v_self, PyObject *__pyx_v_index, PyObject *__pyx_v_value) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setitem__ (wrapper)", 0);
-  assert(__pyx_arg_index); {
-    __pyx_v_index = __Pyx_PyInt_As_int(__pyx_arg_index); if (unlikely((__pyx_v_index == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 47, __pyx_L3_error)
-  }
-  goto __pyx_L4_argument_unpacking_done;
-  __pyx_L3_error:;
-  __Pyx_AddTraceback("faster.fastlist.fastlist.__setitem__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __Pyx_RefNannyFinishContext();
-  return -1;
-  __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((int)__pyx_v_index), ((PyObject *)__pyx_v_value));
+  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((PyObject *)__pyx_v_index), ((PyObject *)__pyx_v_value));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_index, PyObject *__pyx_v_value) {
+static int __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, PyObject *__pyx_v_index, PyObject *__pyx_v_value) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
   __Pyx_RefNannySetupContext("__setitem__", 0);
 
-  /* "faster/fastlist.pyx":48
+  /* "faster/fastlist.pyx":88
  * 
- *     def __setitem__(self, int index, object value):
- *         Py_INCREF(value)             # <<<<<<<<<<<<<<
- *         self._array[index] = <PyObject *>value
+ *     def __setitem__(self, index, object value):
+ *         if isinstance(index, int):             # <<<<<<<<<<<<<<
+ *             self._csetitem_int(index, value)
+ *         elif isinstance(index, slice):
  */
-  Py_INCREF(__pyx_v_value);
+  __pyx_t_1 = PyInt_Check(__pyx_v_index); 
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
 
-  /* "faster/fastlist.pyx":49
- *     def __setitem__(self, int index, object value):
- *         Py_INCREF(value)
- *         self._array[index] = <PyObject *>value             # <<<<<<<<<<<<<<
+    /* "faster/fastlist.pyx":89
+ *     def __setitem__(self, index, object value):
+ *         if isinstance(index, int):
+ *             self._csetitem_int(index, value)             # <<<<<<<<<<<<<<
+ *         elif isinstance(index, slice):
+ *             self._csetitem_slice(index, value)
  */
-  (__pyx_v_self->_array[__pyx_v_index]) = ((PyObject *)__pyx_v_value);
+    __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_6faster_8fastlist_fastlist *)__pyx_v_self->__pyx_vtab)->_csetitem_int(__pyx_v_self, __pyx_t_3, __pyx_v_value);
 
-  /* "faster/fastlist.pyx":47
- *         return 'fastlist.from_sequence([%s])' % ', '.join(repr(v) for v in self)
+    /* "faster/fastlist.pyx":88
  * 
- *     def __setitem__(self, int index, object value):             # <<<<<<<<<<<<<<
- *         Py_INCREF(value)
- *         self._array[index] = <PyObject *>value
+ *     def __setitem__(self, index, object value):
+ *         if isinstance(index, int):             # <<<<<<<<<<<<<<
+ *             self._csetitem_int(index, value)
+ *         elif isinstance(index, slice):
+ */
+    goto __pyx_L3;
+  }
+
+  /* "faster/fastlist.pyx":90
+ *         if isinstance(index, int):
+ *             self._csetitem_int(index, value)
+ *         elif isinstance(index, slice):             # <<<<<<<<<<<<<<
+ *             self._csetitem_slice(index, value)
+ *         else:
+ */
+  __pyx_t_2 = PySlice_Check(__pyx_v_index); 
+  __pyx_t_1 = (__pyx_t_2 != 0);
+  if (likely(__pyx_t_1)) {
+
+    /* "faster/fastlist.pyx":91
+ *             self._csetitem_int(index, value)
+ *         elif isinstance(index, slice):
+ *             self._csetitem_slice(index, value)             # <<<<<<<<<<<<<<
+ *         else:
+ *             raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
+ */
+    if (!(likely(PySlice_Check(__pyx_v_index))||((__pyx_v_index) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "slice", Py_TYPE(__pyx_v_index)->tp_name), 0))) __PYX_ERR(0, 91, __pyx_L1_error)
+    ((struct __pyx_vtabstruct_6faster_8fastlist_fastlist *)__pyx_v_self->__pyx_vtab)->_csetitem_slice(__pyx_v_self, ((PyObject*)__pyx_v_index), __pyx_v_value);
+
+    /* "faster/fastlist.pyx":90
+ *         if isinstance(index, int):
+ *             self._csetitem_int(index, value)
+ *         elif isinstance(index, slice):             # <<<<<<<<<<<<<<
+ *             self._csetitem_slice(index, value)
+ *         else:
+ */
+    goto __pyx_L3;
+  }
+
+  /* "faster/fastlist.pyx":93
+ *             self._csetitem_slice(index, value)
+ *         else:
+ *             raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))             # <<<<<<<<<<<<<<
+ * 
+ *     def resize(self, int newlength):
+ */
+  /*else*/ {
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_index, __pyx_n_s_class); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_name); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = PyObject_Repr(__pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_5 = __Pyx_PyUnicode_ConcatSafe(__pyx_kp_u_incompatible_index_type, __pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_5); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __Pyx_Raise(__pyx_t_4, 0, 0, 0);
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+    __PYX_ERR(0, 93, __pyx_L1_error)
+  }
+  __pyx_L3:;
+
+  /* "faster/fastlist.pyx":87
+ *             i += 1
+ * 
+ *     def __setitem__(self, index, object value):             # <<<<<<<<<<<<<<
+ *         if isinstance(index, int):
+ *             self._csetitem_int(index, value)
  */
 
   /* function exit code */
   __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("faster.fastlist.fastlist.__setitem__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "faster/fastlist.pyx":95
+ *             raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
+ * 
+ *     def resize(self, int newlength):             # <<<<<<<<<<<<<<
+ *         if newlength == self._length:
+ *             return
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_18resize(PyObject *__pyx_v_self, PyObject *__pyx_arg_newlength); /*proto*/
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_18resize(PyObject *__pyx_v_self, PyObject *__pyx_arg_newlength) {
+  int __pyx_v_newlength;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("resize (wrapper)", 0);
+  assert(__pyx_arg_newlength); {
+    __pyx_v_newlength = __Pyx_PyInt_As_int(__pyx_arg_newlength); if (unlikely((__pyx_v_newlength == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 95, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("faster.fastlist.fastlist.resize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_17resize(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((int)__pyx_v_newlength));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_17resize(struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, int __pyx_v_newlength) {
+  int __pyx_v_i;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  int __pyx_t_3;
+  int __pyx_t_4;
+  __Pyx_RefNannySetupContext("resize", 0);
+
+  /* "faster/fastlist.pyx":96
+ * 
+ *     def resize(self, int newlength):
+ *         if newlength == self._length:             # <<<<<<<<<<<<<<
+ *             return
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))
+ */
+  __pyx_t_1 = ((__pyx_v_newlength == __pyx_v_self->_length) != 0);
+  if (__pyx_t_1) {
+
+    /* "faster/fastlist.pyx":97
+ *     def resize(self, int newlength):
+ *         if newlength == self._length:
+ *             return             # <<<<<<<<<<<<<<
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))
+ *         if self._array == NULL:
+ */
+    __Pyx_XDECREF(__pyx_r);
+    __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+    goto __pyx_L0;
+
+    /* "faster/fastlist.pyx":96
+ * 
+ *     def resize(self, int newlength):
+ *         if newlength == self._length:             # <<<<<<<<<<<<<<
+ *             return
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))
+ */
+  }
+
+  /* "faster/fastlist.pyx":98
+ *         if newlength == self._length:
+ *             return
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))             # <<<<<<<<<<<<<<
+ *         if self._array == NULL:
+ *             raise MemoryError()
+ */
+  __pyx_v_self->_array = ((PyObject **)PyMem_Realloc(__pyx_v_self->_array, __pyx_f_6faster_8fastlist_memsize_from_length(__pyx_v_newlength)));
+
+  /* "faster/fastlist.pyx":99
+ *             return
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))
+ *         if self._array == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         if newlength > self._length:
+ */
+  __pyx_t_1 = ((__pyx_v_self->_array == NULL) != 0);
+  if (unlikely(__pyx_t_1)) {
+
+    /* "faster/fastlist.pyx":100
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))
+ *         if self._array == NULL:
+ *             raise MemoryError()             # <<<<<<<<<<<<<<
+ *         if newlength > self._length:
+ *             for i in range(self._length, newlength):
+ */
+    PyErr_NoMemory(); __PYX_ERR(0, 100, __pyx_L1_error)
+
+    /* "faster/fastlist.pyx":99
+ *             return
+ *         self._array = <PyObject **>PyMem_Realloc(self._array, memsize_from_length(newlength))
+ *         if self._array == NULL:             # <<<<<<<<<<<<<<
+ *             raise MemoryError()
+ *         if newlength > self._length:
+ */
+  }
+
+  /* "faster/fastlist.pyx":101
+ *         if self._array == NULL:
+ *             raise MemoryError()
+ *         if newlength > self._length:             # <<<<<<<<<<<<<<
+ *             for i in range(self._length, newlength):
+ *                 Py_INCREF(None)
+ */
+  __pyx_t_1 = ((__pyx_v_newlength > __pyx_v_self->_length) != 0);
+  if (__pyx_t_1) {
+
+    /* "faster/fastlist.pyx":102
+ *             raise MemoryError()
+ *         if newlength > self._length:
+ *             for i in range(self._length, newlength):             # <<<<<<<<<<<<<<
+ *                 Py_INCREF(None)
+ *                 self._array[i] = <PyObject *>None
+ */
+    __pyx_t_2 = __pyx_v_newlength;
+    __pyx_t_3 = __pyx_t_2;
+    for (__pyx_t_4 = __pyx_v_self->_length; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+      __pyx_v_i = __pyx_t_4;
+
+      /* "faster/fastlist.pyx":103
+ *         if newlength > self._length:
+ *             for i in range(self._length, newlength):
+ *                 Py_INCREF(None)             # <<<<<<<<<<<<<<
+ *                 self._array[i] = <PyObject *>None
+ *         self._length = newlength
+ */
+      Py_INCREF(Py_None);
+
+      /* "faster/fastlist.pyx":104
+ *             for i in range(self._length, newlength):
+ *                 Py_INCREF(None)
+ *                 self._array[i] = <PyObject *>None             # <<<<<<<<<<<<<<
+ *         self._length = newlength
+ */
+      (__pyx_v_self->_array[__pyx_v_i]) = ((PyObject *)Py_None);
+    }
+
+    /* "faster/fastlist.pyx":101
+ *         if self._array == NULL:
+ *             raise MemoryError()
+ *         if newlength > self._length:             # <<<<<<<<<<<<<<
+ *             for i in range(self._length, newlength):
+ *                 Py_INCREF(None)
+ */
+  }
+
+  /* "faster/fastlist.pyx":105
+ *                 Py_INCREF(None)
+ *                 self._array[i] = <PyObject *>None
+ *         self._length = newlength             # <<<<<<<<<<<<<<
+ */
+  __pyx_v_self->_length = __pyx_v_newlength;
+
+  /* "faster/fastlist.pyx":95
+ *             raise TypeError('incompatible index type: ' + repr(index.__class__.__name__))
+ * 
+ *     def resize(self, int newlength):             # <<<<<<<<<<<<<<
+ *         if newlength == self._length:
+ *             return
+ */
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_AddTraceback("faster.fastlist.fastlist.resize", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
@@ -2484,19 +3481,19 @@ static int __pyx_pf_6faster_8fastlist_8fastlist_15__setitem__(struct __pyx_obj_6
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_18__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_18__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_20__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_20__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_17__reduce_cython__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self));
+  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_19__reduce_cython__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_17__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self) {
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_19__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2538,19 +3535,19 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_17__reduce_cython__(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_20__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_20__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_22__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_6faster_8fastlist_8fastlist_22__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_19__setstate_cython__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_6faster_8fastlist_8fastlist_21__setstate_cython__(((struct __pyx_obj_6faster_8fastlist_fastlist *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_19__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_21__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_6faster_8fastlist_fastlist *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2583,8 +3580,10 @@ static PyObject *__pyx_pf_6faster_8fastlist_8fastlist_19__setstate_cython__(CYTH
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
+static struct __pyx_vtabstruct_6faster_8fastlist_fastlist __pyx_vtable_6faster_8fastlist_fastlist;
 
 static PyObject *__pyx_tp_new_6faster_8fastlist_fastlist(PyTypeObject *t, PyObject *a, PyObject *k) {
+  struct __pyx_obj_6faster_8fastlist_fastlist *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -2592,6 +3591,8 @@ static PyObject *__pyx_tp_new_6faster_8fastlist_fastlist(PyTypeObject *t, PyObje
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
+  p = ((struct __pyx_obj_6faster_8fastlist_fastlist *)o);
+  p->__pyx_vtab = __pyx_vtabptr_6faster_8fastlist_fastlist;
   if (unlikely(__pyx_pw_6faster_8fastlist_8fastlist_1__cinit__(o, a, k) < 0)) goto bad;
   return o;
   bad:
@@ -2636,8 +3637,9 @@ static int __pyx_mp_ass_subscript_6faster_8fastlist_fastlist(PyObject *o, PyObje
 
 static PyMethodDef __pyx_methods_6faster_8fastlist_fastlist[] = {
   {"from_sequence", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6faster_8fastlist_8fastlist_3from_sequence, METH_VARARGS|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_6faster_8fastlist_8fastlist_18__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_6faster_8fastlist_8fastlist_20__setstate_cython__, METH_O, 0},
+  {"resize", (PyCFunction)__pyx_pw_6faster_8fastlist_8fastlist_18resize, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_6faster_8fastlist_8fastlist_20__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_6faster_8fastlist_8fastlist_22__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -3107,8 +4109,10 @@ static struct PyModuleDef __pyx_moduledef = {
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_, __pyx_k_, sizeof(__pyx_k_), 0, 1, 0, 0},
+  {&__pyx_n_s_MemoryError, __pyx_k_MemoryError, sizeof(__pyx_k_MemoryError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_n_s_args, __pyx_k_args, sizeof(__pyx_k_args), 0, 0, 1, 1},
+  {&__pyx_n_s_class, __pyx_k_class, sizeof(__pyx_k_class), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_close, __pyx_k_close, sizeof(__pyx_k_close), 0, 0, 1, 1},
   {&__pyx_n_s_faster_fastlist, __pyx_k_faster_fastlist, sizeof(__pyx_k_faster_fastlist), 0, 0, 1, 1},
@@ -3120,11 +4124,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_genexpr, __pyx_k_genexpr, sizeof(__pyx_k_genexpr), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_i, __pyx_k_i, sizeof(__pyx_k_i), 0, 0, 1, 1},
+  {&__pyx_kp_u_incompatible_index_type, __pyx_k_incompatible_index_type, sizeof(__pyx_k_incompatible_index_type), 0, 1, 0, 0},
+  {&__pyx_n_s_indices, __pyx_k_indices, sizeof(__pyx_k_indices), 0, 0, 1, 1},
   {&__pyx_n_s_iter, __pyx_k_iter, sizeof(__pyx_k_iter), 0, 0, 1, 1},
   {&__pyx_n_s_length, __pyx_k_length, sizeof(__pyx_k_length), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_s_no_default___reduce___due_to_non, __pyx_k_no_default___reduce___due_to_non, sizeof(__pyx_k_no_default___reduce___due_to_non), 0, 0, 1, 0},
+  {&__pyx_n_s_pyx_vtable, __pyx_k_pyx_vtable, sizeof(__pyx_k_pyx_vtable), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
@@ -3141,9 +4148,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 17, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 13, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_builtin_staticmethod = __Pyx_GetBuiltinName(__pyx_n_s_staticmethod); if (!__pyx_builtin_staticmethod) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 59, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -3172,17 +4180,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "faster/fastlist.pyx":18
+  /* "faster/fastlist.pyx":24
  * 
  *     @staticmethod
  *     def from_sequence(seq):             # <<<<<<<<<<<<<<
  *         cdef fastlist result = fastlist(len(seq))
  *         cdef int i
  */
-  __pyx_tuple__4 = PyTuple_Pack(3, __pyx_n_s_seq, __pyx_n_s_result, __pyx_n_s_i); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(3, __pyx_n_s_seq, __pyx_n_s_result, __pyx_n_s_i); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
-  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_faster_fastlist_pyx, __pyx_n_s_from_sequence, 18, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_codeobj__5 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__4, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_faster_fastlist_pyx, __pyx_n_s_from_sequence, 24, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__5)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3191,6 +4199,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 }
 
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
+  __pyx_umethod_PySlice_Type_indices.type = (PyObject*)&PySlice_Type;
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
   return 0;
   __pyx_L1_error:;
@@ -3233,17 +4242,23 @@ static int __Pyx_modinit_type_init_code(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_vtabptr_6faster_8fastlist_fastlist = &__pyx_vtable_6faster_8fastlist_fastlist;
+  __pyx_vtable_6faster_8fastlist_fastlist._cgetitem_int = (PyObject *(*)(struct __pyx_obj_6faster_8fastlist_fastlist *, int))__pyx_f_6faster_8fastlist_8fastlist__cgetitem_int;
+  __pyx_vtable_6faster_8fastlist_fastlist._cgetitem_slice = (PyObject *(*)(struct __pyx_obj_6faster_8fastlist_fastlist *, PyObject *))__pyx_f_6faster_8fastlist_8fastlist__cgetitem_slice;
+  __pyx_vtable_6faster_8fastlist_fastlist._csetitem_int = (void (*)(struct __pyx_obj_6faster_8fastlist_fastlist *, int, PyObject *))__pyx_f_6faster_8fastlist_8fastlist__csetitem_int;
+  __pyx_vtable_6faster_8fastlist_fastlist._csetitem_slice = (void (*)(struct __pyx_obj_6faster_8fastlist_fastlist *, PyObject *, PyObject *))__pyx_f_6faster_8fastlist_8fastlist__csetitem_slice;
+  if (PyType_Ready(&__pyx_type_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6faster_8fastlist_fastlist.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_6faster_8fastlist_fastlist.tp_dictoffset && __pyx_type_6faster_8fastlist_fastlist.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_6faster_8fastlist_fastlist.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_fastlist, (PyObject *)&__pyx_type_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_6faster_8fastlist_fastlist.tp_dict, __pyx_vtabptr_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_fastlist, (PyObject *)&__pyx_type_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_6faster_8fastlist_fastlist) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __pyx_ptype_6faster_8fastlist_fastlist = &__pyx_type_6faster_8fastlist_fastlist;
-  if (PyType_Ready(&__pyx_type_6faster_8fastlist___pyx_scope_struct____iter__) < 0) __PYX_ERR(0, 39, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6faster_8fastlist___pyx_scope_struct____iter__) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6faster_8fastlist___pyx_scope_struct____iter__.tp_print = 0;
   #endif
@@ -3251,7 +4266,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_6faster_8fastlist___pyx_scope_struct____iter__.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_6faster_8fastlist___pyx_scope_struct____iter__ = &__pyx_type_6faster_8fastlist___pyx_scope_struct____iter__;
-  if (PyType_Ready(&__pyx_type_6faster_8fastlist___pyx_scope_struct_1___repr__) < 0) __PYX_ERR(0, 44, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6faster_8fastlist___pyx_scope_struct_1___repr__) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6faster_8fastlist___pyx_scope_struct_1___repr__.tp_print = 0;
   #endif
@@ -3259,7 +4274,7 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_6faster_8fastlist___pyx_scope_struct_1___repr__.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_6faster_8fastlist___pyx_scope_struct_1___repr__ = &__pyx_type_6faster_8fastlist___pyx_scope_struct_1___repr__;
-  if (PyType_Ready(&__pyx_type_6faster_8fastlist___pyx_scope_struct_2_genexpr) < 0) __PYX_ERR(0, 45, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_6faster_8fastlist___pyx_scope_struct_2_genexpr) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_6faster_8fastlist___pyx_scope_struct_2_genexpr.tp_print = 0;
   #endif
@@ -3522,32 +4537,32 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "faster/fastlist.pyx":18
+  /* "faster/fastlist.pyx":24
  * 
  *     @staticmethod
  *     def from_sequence(seq):             # <<<<<<<<<<<<<<
  *         cdef fastlist result = fastlist(len(seq))
  *         cdef int i
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6faster_8fastlist_8fastlist_3from_sequence, NULL, __pyx_n_s_faster_fastlist); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_6faster_8fastlist_8fastlist_3from_sequence, NULL, __pyx_n_s_faster_fastlist); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist->tp_dict, __pyx_n_s_from_sequence, __pyx_t_1) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist->tp_dict, __pyx_n_s_from_sequence, __pyx_t_1) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_6faster_8fastlist_fastlist);
 
-  /* "faster/fastlist.pyx":17
+  /* "faster/fastlist.pyx":23
  *                 self._array[i] = <PyObject *>None
  * 
  *     @staticmethod             # <<<<<<<<<<<<<<
  *     def from_sequence(seq):
  *         cdef fastlist result = fastlist(len(seq))
  */
-  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_6faster_8fastlist_fastlist, __pyx_n_s_from_sequence); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __Pyx_GetNameInClass(__pyx_t_1, (PyObject *)__pyx_ptype_6faster_8fastlist_fastlist, __pyx_n_s_from_sequence); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_staticmethod, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist->tp_dict, __pyx_n_s_from_sequence, __pyx_t_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_6faster_8fastlist_fastlist->tp_dict, __pyx_n_s_from_sequence, __pyx_t_2) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   PyType_Modified(__pyx_ptype_6faster_8fastlist_fastlist);
 
@@ -4083,9 +5098,84 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
 }
 
+/* UnpackUnboundCMethod */
+static int __Pyx_TryUnpackUnboundCMethod(__Pyx_CachedCFunction* target) {
+    PyObject *method;
+    method = __Pyx_PyObject_GetAttrStr(target->type, *target->method_name);
+    if (unlikely(!method))
+        return -1;
+    target->method = method;
+#if CYTHON_COMPILING_IN_CPYTHON
+    #if PY_MAJOR_VERSION >= 3
+    if (likely(__Pyx_TypeCheck(method, &PyMethodDescr_Type)))
+    #endif
+    {
+        PyMethodDescrObject *descr = (PyMethodDescrObject*) method;
+        target->func = descr->d_method->ml_meth;
+        target->flag = descr->d_method->ml_flags & ~(METH_CLASS | METH_STATIC | METH_COEXIST | METH_STACKLESS);
+    }
+#endif
+    return 0;
+}
+
+/* CallUnboundCMethod1 */
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE PyObject* __Pyx_CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg) {
+    if (likely(cfunc->func)) {
+        int flag = cfunc->flag;
+        if (flag == METH_O) {
+            return (*(cfunc->func))(self, arg);
+        } else if (PY_VERSION_HEX >= 0x030600B1 && flag == METH_FASTCALL) {
+            if (PY_VERSION_HEX >= 0x030700A0) {
+                return (*(__Pyx_PyCFunctionFast)(void*)(PyCFunction)cfunc->func)(self, &arg, 1);
+            } else {
+                return (*(__Pyx_PyCFunctionFastWithKeywords)(void*)(PyCFunction)cfunc->func)(self, &arg, 1, NULL);
+            }
+        } else if (PY_VERSION_HEX >= 0x030700A0 && flag == (METH_FASTCALL | METH_KEYWORDS)) {
+            return (*(__Pyx_PyCFunctionFastWithKeywords)(void*)(PyCFunction)cfunc->func)(self, &arg, 1, NULL);
+        }
+    }
+    return __Pyx__CallUnboundCMethod1(cfunc, self, arg);
+}
+#endif
+static PyObject* __Pyx__CallUnboundCMethod1(__Pyx_CachedCFunction* cfunc, PyObject* self, PyObject* arg){
+    PyObject *args, *result = NULL;
+    if (unlikely(!cfunc->func && !cfunc->method) && unlikely(__Pyx_TryUnpackUnboundCMethod(cfunc) < 0)) return NULL;
+#if CYTHON_COMPILING_IN_CPYTHON
+    if (cfunc->func && (cfunc->flag & METH_VARARGS)) {
+        args = PyTuple_New(1);
+        if (unlikely(!args)) goto bad;
+        Py_INCREF(arg);
+        PyTuple_SET_ITEM(args, 0, arg);
+        if (cfunc->flag & METH_KEYWORDS)
+            result = (*(PyCFunctionWithKeywords)(void*)(PyCFunction)cfunc->func)(self, args, NULL);
+        else
+            result = (*cfunc->func)(self, args);
+    } else {
+        args = PyTuple_New(2);
+        if (unlikely(!args)) goto bad;
+        Py_INCREF(self);
+        PyTuple_SET_ITEM(args, 0, self);
+        Py_INCREF(arg);
+        PyTuple_SET_ITEM(args, 1, arg);
+        result = __Pyx_PyObject_Call(cfunc->method, args, NULL);
+    }
+#else
+    args = PyTuple_Pack(2, self, arg);
+    if (unlikely(!args)) goto bad;
+    result = __Pyx_PyObject_Call(cfunc->method, args, NULL);
+#endif
+bad:
+    Py_XDECREF(args);
+    return result;
+}
+
 /* None */
-static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname) {
-    PyErr_Format(PyExc_NameError, "free variable '%s' referenced before assignment in enclosing scope", varname);
+static CYTHON_INLINE int __Pyx_div_int(int a, int b) {
+    int q = a / b;
+    int r = a - q*b;
+    q -= ((r != 0) & ((r ^ b) < 0));
+    return q;
 }
 
 /* PyErrFetchRestore */
@@ -4271,6 +5361,53 @@ bad:
 }
 #endif
 
+/* None */
+static CYTHON_INLINE void __Pyx_RaiseClosureNameError(const char *varname) {
+    PyErr_Format(PyExc_NameError, "free variable '%s' referenced before assignment in enclosing scope", varname);
+}
+
+/* WriteUnraisableException */
+static void __Pyx_WriteUnraisable(const char *name, CYTHON_UNUSED int clineno,
+                                  CYTHON_UNUSED int lineno, CYTHON_UNUSED const char *filename,
+                                  int full_traceback, CYTHON_UNUSED int nogil) {
+    PyObject *old_exc, *old_val, *old_tb;
+    PyObject *ctx;
+    __Pyx_PyThreadState_declare
+#ifdef WITH_THREAD
+    PyGILState_STATE state;
+    if (nogil)
+        state = PyGILState_Ensure();
+#ifdef _MSC_VER
+    else state = (PyGILState_STATE)-1;
+#endif
+#endif
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&old_exc, &old_val, &old_tb);
+    if (full_traceback) {
+        Py_XINCREF(old_exc);
+        Py_XINCREF(old_val);
+        Py_XINCREF(old_tb);
+        __Pyx_ErrRestore(old_exc, old_val, old_tb);
+        PyErr_PrintEx(1);
+    }
+    #if PY_MAJOR_VERSION < 3
+    ctx = PyString_FromString(name);
+    #else
+    ctx = PyUnicode_FromString(name);
+    #endif
+    __Pyx_ErrRestore(old_exc, old_val, old_tb);
+    if (!ctx) {
+        PyErr_WriteUnraisable(Py_None);
+    } else {
+        PyErr_WriteUnraisable(ctx);
+        Py_DECREF(ctx);
+    }
+#ifdef WITH_THREAD
+    if (nogil)
+        PyGILState_Release(state);
+#endif
+}
+
 /* PyObject_GenericGetAttrNoDict */
 #if CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP && PY_VERSION_HEX < 0x03070000
 static PyObject *__Pyx_RaiseGenericGetAttributeError(PyTypeObject *tp, PyObject *attr_name) {
@@ -4320,6 +5457,24 @@ static PyObject* __Pyx_PyObject_GenericGetAttr(PyObject* obj, PyObject* attr_nam
     return __Pyx_PyObject_GenericGetAttrNoDict(obj, attr_name);
 }
 #endif
+
+/* SetVTable */
+static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
+#if PY_VERSION_HEX >= 0x02070000
+    PyObject *ob = PyCapsule_New(vtable, 0, 0);
+#else
+    PyObject *ob = PyCObject_FromVoidPtr(vtable, 0);
+#endif
+    if (!ob)
+        goto bad;
+    if (PyDict_SetItem(dict, __pyx_n_s_pyx_vtable, ob) < 0)
+        goto bad;
+    Py_DECREF(ob);
+    return 0;
+bad:
+    Py_XDECREF(ob);
+    return -1;
+}
 
 /* SetupReduce */
 static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
@@ -4822,6 +5977,63 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
         return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
+}
+
+/* FromPyCTupleUtility */
+static __pyx_ctuple_int__and_int__and_int __pyx_convert__from_py___pyx_ctuple_int__and_int__and_int(PyObject * o) {
+    __pyx_ctuple_int__and_int__and_int result;
+    if (!PyTuple_Check(o) || PyTuple_GET_SIZE(o) != 3) {
+        PyErr_Format(PyExc_TypeError, "Expected %.16s of size %d, got %.200s", "a tuple", 3, Py_TYPE(o)->tp_name);
+        goto bad;
+    }
+#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        result.f0 = __Pyx_PyInt_As_int(PyTuple_GET_ITEM(o, 0));
+        if ((result.f0 == (int)-1) && PyErr_Occurred()) goto bad;
+        result.f1 = __Pyx_PyInt_As_int(PyTuple_GET_ITEM(o, 1));
+        if ((result.f1 == (int)-1) && PyErr_Occurred()) goto bad;
+        result.f2 = __Pyx_PyInt_As_int(PyTuple_GET_ITEM(o, 2));
+        if ((result.f2 == (int)-1) && PyErr_Occurred()) goto bad;
+#else
+    {
+        PyObject *item;
+        item = PySequence_ITEM(o, 0);  if (unlikely(!item)) goto bad;
+        result.f0 = __Pyx_PyInt_As_int(item);
+        Py_DECREF(item);
+        if ((result.f0 == (int)-1) && PyErr_Occurred()) goto bad;
+        item = PySequence_ITEM(o, 1);  if (unlikely(!item)) goto bad;
+        result.f1 = __Pyx_PyInt_As_int(item);
+        Py_DECREF(item);
+        if ((result.f1 == (int)-1) && PyErr_Occurred()) goto bad;
+        item = PySequence_ITEM(o, 2);  if (unlikely(!item)) goto bad;
+        result.f2 = __Pyx_PyInt_As_int(item);
+        Py_DECREF(item);
+        if ((result.f2 == (int)-1) && PyErr_Occurred()) goto bad;
+    }
+#endif
+    return result;
+bad:
+    return result;
+}
+
+/* ToPyCTupleUtility */
+static PyObject* __pyx_convert__to_py___pyx_ctuple_int__and_int__and_int(__pyx_ctuple_int__and_int__and_int value) {
+    PyObject* item = NULL;
+    PyObject* result = PyTuple_New(3);
+    if (!result) goto bad;
+        item = __Pyx_PyInt_From_int(value.f0);
+        if (!item) goto bad;
+        PyTuple_SET_ITEM(result, 0, item);
+        item = __Pyx_PyInt_From_int(value.f1);
+        if (!item) goto bad;
+        PyTuple_SET_ITEM(result, 1, item);
+        item = __Pyx_PyInt_From_int(value.f2);
+        if (!item) goto bad;
+        PyTuple_SET_ITEM(result, 2, item);
+    return result;
+bad:
+    Py_XDECREF(item);
+    Py_XDECREF(result);
+    return NULL;
 }
 
 /* CIntFromPy */

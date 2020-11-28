@@ -7,3 +7,4 @@ faster/*.pyd
 faster/*.so
 cythonize.cmd
 build_exts.cmd
+*.c

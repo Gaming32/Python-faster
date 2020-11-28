@@ -25,6 +25,8 @@ cdef class fastlist:
     cpdef void remove(self, object x, int starthint=?) except *
     cpdef void reverse_range(self, int start, int end) except *
     cpdef void reverse(self)
+    cpdef int index(self, object x, int i=?, int j=?) except -1
+    cpdef int count(self, object x)
 
 
 cdef fastlist from_sequence(object seq)

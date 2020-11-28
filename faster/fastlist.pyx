@@ -220,7 +220,6 @@ cdef class fastlist:
         self.multiply(times)
         return self
 
-
     cpdef void insert(self, int i, object x) except *:
         if i < 0 or i > self._length:
             raise IndexError('index %r out of range for fastlist of length %r' % (i, self._length))
@@ -271,6 +270,30 @@ cdef class fastlist:
     
     cpdef void reverse(self):
         self.reverse_range(0, self._length - 1)
+
+    cpdef int index(self, object x, int i=0, int j=-1) except -1:
+        if j == -1:
+            j = self._length
+        if i < 0 or i >= self._length:
+            raise IndexError('index %r out of range for fastlist of length %r' % (i, self._length))
+        if j < 0 or j > self._length:
+            raise IndexError('index %r out of range for fastlist of length %r' % (j, self._length))
+        cdef int current
+        cdef object obj
+        for current in range(i, j):
+            obj = <object>self._array[current]
+            if obj == x:
+                return current
+        raise ValueError('%r not in fastlist of length %r' % (x, self._length))
+
+    cpdef int count(self, object x):
+        cdef int i, res = 0
+        cdef object obj
+        for i in range(self._length):
+            obj = <object>self._array[i]
+            if obj == x:
+                res += 1
+        return res
 
 
 cdef fastlist from_sequence(object seq):

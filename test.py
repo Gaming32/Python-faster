@@ -4,8 +4,9 @@ import cProfile
 from pstats import SortKey
 
 l = fastlist.from_sequence(list(range(10)))
+l.insert(0, 4)
 print(l)
-l.reverse_range(3, 6)
+print(l.count(5))
 print(l)
 del l
 
